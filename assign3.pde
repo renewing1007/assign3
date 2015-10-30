@@ -1,4 +1,4 @@
-                          /* please implement your assign1 code in this file. */
+                           /* please implement your assign1 code in this file. */
   PImage fighterImg;
   PImage treasureImg;
   PImage hpImg;
@@ -7,14 +7,22 @@
   PImage bg2Img;
   PImage bg3Img;
   PImage bg4Img;
+  PImage end1Img;
+  PImage end2Img;
+  PImage start1Img;
+  PImage start2Img;
+  final int GAME_START=0;
+  final int GAME_RUN=1;
+  final int GAME_OVER=2;
+  int gamestate = GAME_START;
   boolean upPressed=false;
   boolean downPressed=false;
   boolean leftPressed=false;
   boolean rightPressed=false;
-  final int straight=0;
-  final int slash=1;
-  final int diamond=2;
-  int state=0;
+  final int straight=3;
+  final int slash=4;
+  final int diamond=5;
+  int state=3;
   int treasure_x,treasure_y,hp_x,enemy_x,enemy_y,fighterx1,fightery1,x2,y2,x3,y3;
   float spacingX,spacingY,spacingY1;
   float spacingx,spacingy,spacingy1;
@@ -31,6 +39,10 @@ void setup () {
  bg2Img=loadImage("img/bg2.png");//bg2
  bg3Img=loadImage("img/bg1.png");//bg1
  bg4Img=loadImage("img/bg2.png");//bg2
+ end1Img=loadImage("img/end1.png");
+ end2Img=loadImage("img/end2.png");
+ start1Img=loadImage("img/start1.png");
+ start2Img=loadImage("img/start2.png");
  treasure_x=floor(random(600));
  treasure_y=floor(random(34,440));
  //treasure_x=176;
@@ -57,6 +69,28 @@ void setup () {
 
 void draw() {
   // your code
+  switch(gamestate){
+  case GAME_START:
+   background(0);
+  image(start2Img,0,0);
+  if(mouseY>375 && mouseY<420){
+    if(mouseX>200 && mouseX<450){
+    background(0);
+  image(start1Img,0,0);
+  if(mousePressed){
+  gamestate=1;
+  }
+  }else{
+  background(0);
+  image(start1Img,0,0);
+  }
+    }
+  
+  
+  break;
+  
+  case 1:
+  
   background(0);
   image(bg1Img,x2,0);
 
@@ -120,15 +154,19 @@ void draw() {
  
   
    //if the fighter gets the treasure
-  /*
+  
+  //if the fighter gets the treasure
   if(treasure_x-40 <= fighterx1 && fighterx1 <= treasure_x+40 ){
-     if(treasure_y-50 <= fightery1 && treasure_y <= enemy_y+40){
+     if(treasure_y-50 <= fightery1 && fightery1 <= treasure_y+40){
      hp_x+=19;
+     if(hp_x>190){
+     hp_x=190;
+     }
      treasure_x=floor(random(600));
      treasure_y=floor(random(34,440));
    } 
    }
-  
+  /*
   //if the fighter is attacked by the enemy
    if(enemy_x-49 <= fighterx1 && fighterx1 <= enemy_x+40 ){
      if(enemy_y-49 <= fightery1 && fightery1 <= enemy_y+60){
@@ -166,10 +204,10 @@ switch(state){
  if(enemy_x>=640){
     enemy_x=0;
      enemy_y=floor(random(200,420));
- state=1;}
+ state=4;}
  break;
  
- case 1:
+ case 4:
 //image(enemyImg,enemy_x,enemy_y);
 
  enemy_x+=3;
@@ -183,11 +221,11 @@ switch(state){
     enemy_x=10;
    // enemy_y=135; 
     enemy_y=floor(random(135,315));
-    state=2;}
+    state=5;}
  break;
  
 
- case 2:
+ case 5:
 
  //image(enemyImg,enemy_x,enemy_y);
  enemy_x+=3;
@@ -212,10 +250,40 @@ switch(state){
   if(enemy_x>=640){
     enemy_x=10;
     enemy_y=floor(random(35,420));
-    state=0;
+    state=3;
  }
   }
-   } 
+   if(hp_x==0){
+  gamestate=2;}
+  break;
+   case 2:
+  background(0);
+  image(end1Img,0,0);
+  if(mouseY>300 && mouseY<350){
+    if(mouseX>200 && mouseX<445){
+   background(0);
+  image(end2Img,0,0);
+   if(mousePressed){
+  hp_x=38;
+   fighterx1=width-50;
+ fightery1=height/2;
+  enemy_x=0;
+  enemy_y=100;
+     gamestate=1;
+  }
+  }
+  else{
+    background(0);
+  image(end1Img,0,0);
+  }  
+  }
+ 
+  break;
+  
+  
+  
+  }  
+ } 
  void keyPressed(){
  if(key== CODED){
   switch(keyCode){
@@ -258,4 +326,4 @@ switch(state){
  
  
  
-      
+ 
